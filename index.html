@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barış — Kişisel Site</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #e6e6e6;
+      font-family: "Montserrat", sans-serif;
+      letter-spacing: 0.5px;
+      overflow: hidden;
+    }
+
+    /* --- Giriş ekranı --- */
+    #entry {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #entry h1 {
+      font-size: 2.2rem;
+      font-weight: 300;
+      letter-spacing: 6px;
+    }
+
+    #triangle {
+      width: 0;
+      height: 0;
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      border-bottom: 120px solid #555;
+      opacity: 0.6;
+      animation: glow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes glow {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    /* --- Arka plan --- */
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 0%, #111 0%, #000 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: 1.5s ease;
+    }
+
+    /* --- Fade reveal --- */
+    .fade-in {
+      opacity: 1 !important;
+    }
+
+    /* --- Üst bölüm --- */
+    header {
+      width: 100%;
+      padding: 120px 0 80px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 1.2s ease;
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+    }
+
+    header .line {
+      width: 90px;
+      height: 2px;
+      background: #444;
+      margin: 18px auto;
+    }
+
+    /* --- İçerik kutusu --- */
+    .card {
+      width: min(700px, 90%);
+      margin: 0 auto;
+      background: rgba(20, 20, 20, 0.54);
+      border: 1px solid #111;
+      border-radius: 10px;
+      padding: 40px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 1.2s ease;
+    }
+
+    .card h2 {
+      font-weight: 300;
+      margin-bottom: 18px;
+      font-size: 1.6rem;
+      letter-spacing: 2px;
+    }
+
+    .card p {
+      line-height: 1.7;
+      color: #bdbdbd;
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 60px 0;
+      color: #444;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      transition: 1.2s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Giriş ekranı -->
+  <div id="entry">
+    <div id="triangle"></div>
+    <h1>GİRİŞ YAPILIYOR...</h1>
+  </div>
+
+  <div class="bg" id="bg"></div>
+
+  <header id="header">
+    <h1>B A R I Ş</h1>
+    <div class="line"></div>
+  </header>
+
+  <div class="card" id="card">
+    <h2>HAKKIMDA</h2>
+    <p>
+      Sessiz, dikkat çeken ama kendini göstermeyen bir yapıya sahibim. Gizliliği, sadeliği ve karanlık tarzı seviyorum.
+      Kendimi geliştirmeyi, güçlü olmayı ve herkesten bağımsız ilerlemeyi tercih ederim. Spor, teknoloji ve dijital dünya yaşamımın büyük bir parçası.
+    </p>
+  </div>
+
+  <footer id="footer">
+    B A R I Ş — 2025
+  </footer>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("entry").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("entry").style.display = "none";
+        document.getElementById("bg").classList.add("fade-in");
+        document.getElementById("header").style.opacity = "1";
+        document.getElementById("header").style.transform = "translateY(0)";
+        document.getElementById("card").style.opacity = "1";
+        document.getElementById("card").style.transform = "translateY(0)";
+        document.getElementById("footer").style.opacity = "1";
+      }, 1000);
+    }, 2000);
+  </script>
+
+</body>
+</html>
