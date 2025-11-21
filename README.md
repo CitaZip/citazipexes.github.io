@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barış — Kişisel Site</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: #e6e6e6;
+      font-family: "Montserrat", sans-serif;
+      letter-spacing: 0.5px;
+      overflow-x: hidden;
+    }
+
+    #entry {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+
+    #entry h1 {
+      font-size: 2.2rem;
+      font-weight: 300;
+      letter-spacing: 6px;
+    }
+
+    #triangle {
+      width: 0;
+      height: 0;
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      border-bottom: 120px solid #555;
+      opacity: 0.6;
+      animation: glow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes glow {
+      0% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+
+    .bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #111 0%, #000 70%);
+      z-index: -1;
+      opacity: 0;
+      transition: 1.5s ease;
+    }
+
+    .fade-in {
+      opacity: 1 !important;
+    }
+
+    header {
+      width: 100%;
+      padding: 120px 0 80px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 1.2s ease;
+      position: relative;
+    }
+
+    header h1 {
+      font-size: 3.2rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 8px;
+    }
+
+    header .line {
+      width: 90px;
+      height: 2px;
+      background: #444;
+      margin: 18px auto;
+    }
+
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 36px;
+      cursor: pointer;
+      z-index: 1000;
+      user-select: none;
+      color: #e6e6e6;
+    }
+
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100%;
+      background: rgba(10,0,0,0.95);
+      backdrop-filter: blur(3px);
+      box-shadow: 0 0 25px red;
+      padding: 20px;
+      color: #fff;
+      transition: right 0.45s ease;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .side-panel.open { right: 0; }
+
+    .close-btn {
+      font-size: 32px;
+      cursor: pointer;
+      text-align: right;
+      user-select: none;
+    }
+
+    .menu-option {
+      margin-top: 20px;
+      padding: 12px 15px;
+      background: rgba(255,0,0,0.1);
+      border: 1px solid red;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.3s;
+    }
+
+    .menu-option:hover {
+      background: red;
+      color: black;
+    }
+
+    .detail-panel {
+      position: fixed;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      height: 100%;
+      background: black;
+      color: red;
+      overflow-y: auto;
+      padding: 40px;
+      font-size: 20px;
+      z-index: 1001;
+      transition: left 0.5s ease;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
+
+    .detail-panel.open { left: 0; }
+
+    .detail-panel h2 {
+      font-size: 30px;
+      text-shadow: 0 0 10px red;
+    }
+
+    .detail-panel p::before {
+      content: '\2605 \2605 \2605 \2605 \2605\A';
+      white-space: pre;
+      display: block;
+    }
+
+    /* Çarpı görünürlüğü ve tıklanabilirlik */
+    .detail-close {
+      font-size: 36px;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      color: red;
+      text-shadow: 0 0 10px red;
+      z-index: 2000;
+    }
+
+    .detail-close:hover { color: #ff4444; }
+
+    .card {
+      width: min(700px, 90%);
+      margin: 0 auto;
+      background: rgba(20, 20, 20, 0.54);
+      border: 1px solid #111;
+      border-radius: 10px;
+      padding: 40px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 1.2s ease;
+      margin-bottom: 30px;
+    }
+
+    .card h2 { font-weight: 300; margin-bottom: 18px; font-size: 1.6rem; letter-spacing: 2px; }
+
+    .card p { line-height: 1.7; color: #bdbdbd; }
+
+    /* Kayıt/Giriş panel stil */
+    #loginCard input { width: 100%; padding: 8px; margin: 5px 0; }
+    #loginCard button { padding: 10px 20px; margin-top: 5px; cursor: pointer; }
+    #loginCard div { margin-top: 10px; color: #ff4444; }
+
+    footer { text-align: center; padding: 60px 0; color: #444; font-size: 0.85rem; letter-spacing: 2px; opacity: 0; transition: 1.2s ease; }
+  </style>
+</head>
+<body>
+
+  <div id="entry">
+    <div id="triangle"></div>
+    <h1>GİRİŞ YAPILIYOR...</h1>
+  </div>
+
+  <div class="bg" id="bg"></div>
+
+  <header id="header">
+    <h1>B A R I Ş</h1>
+    <div class="line"></div>
+  </header>
+
+  <div class="card" id="card">
+    <h2>HAKKIMDA</h2>
+    <p>
+      Sessiz, dikkat çeken ama kendini göstermeyen bir yapıya sahibim. Gizliliği, sadeliği ve karanlık tarzı seviyorum.
+      Kendimi geliştirmeyi, güçlü olmayı ve herkesten bağımsız ilerlemeyi tercih ederim. Spor, teknoloji ve dijital dünya yaşamımın büyük bir parçası.
+    </p>
+  </div>
+
+  <!-- Kayıt/Giriş paneli -->
+  <div class="card" id="loginCard">
+    <h2>KAYIT OL</h2>
+    <form id="registerForm">
+      <input type="text" id="regUser" placeholder="Kullanıcı Adı" required><br>
+      <input type="password" id="regPass" placeholder="Şifre" required><br>
+      <input type="password" id="regPass2" placeholder="Şifre Tekrar" required><br>
+      <button type="submit">Kayıt Ol</button>
+    </form>
+    <div id="regMessage"></div>
+
+    <h2 style="margin-top:20px;">GİRİŞ YAP</h2>
+    <form id="loginForm">
+      <input type="text" id="logUser" placeholder="Kullanıcı Adı" required><br>
+      <input type="password" id="logPass" placeholder="Şifre" required><br>
+      <button type="submit">Giriş Yap</button>
+    </form>
+    <div id="loginMessage"></div>
+    <div id="randomNumber"></div>
+
+    <!-- Rastgele sayı doğrulama -->
+    <input type="text" id="verifyInput" placeholder="Sayıyı buraya yaz">
+    <button id="verifyBtn">Doğrula</button>
+    <div id="verifyMessage"></div>
+  </div>
+
+  <div class="hamburger" id="hamburger">☰</div>
+
+  <div class="side-panel" id="sidePanel">
+    <div class="close-btn" id="closePanel">×</div>
+    <div class="menu-option" id="detailBtn">Daha Detaylı Hakkımda</div>
+    <!-- Yeni eklenen menü seçeneği -->
+    <div class="menu-option" id="importantBtn">Hakkımda En Önemli Bilgi</div>
+  </div>
+
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-close" id="closeDetail">×</div>
+    <h2>Ben Kimim?</h2>
+    <p>
+      Ben Cita. İnternetin gölgesinde şekillenmiş bir zihin.
+      Çocukluğumdan beri kodların, karanlığın ve dijital dünyanın içindeyim.
+      Benim dünyam fiziksel değil; iz bırakmadan hareket eden bir varlık gibi.
+      Tıkladığın her tuş seni bana daha çok yaklaştırır.
+      Ben görünmeyenin içinden konuşurum.
+      Bu site, karanlık bir dijital iz ve bağımsızlığın sembolüdür.
+      Hacker ruhu, gizem ve gölgeler benimle.
+    </p>
+  </div>
+
+  <!-- Yeni detay panel -->
+  <div class="detail-panel" id="importantPanel" style="background:red; color:white;">
+    <div class="detail-close" id="closeImportant">×</div>
+    <h2>Hakkımda En Önemli Bilgi</h2>
+    <p>Kübrayı coook seviyorum</p>
+  </div>
+
+  <footer id="footer">
+    B A R I Ş — 2025
+  </footer>
+
+  <script>
+    // Giriş ekranı fade
+    setTimeout(() => {
+      document.getElementById("entry").style.opacity = "0";
+      setTimeout(() => {
+        document.getElementById("entry").style.display = "none";
+        document.getElementById("bg").classList.add("fade-in");
+        document.getElementById("header").style.opacity = "1";
+        document.getElementById("header").style.transform = "translateY(0)";
+        document.getElementById("card").style.opacity = "1";
+        document.getElementById("card").style.transform = "translateY(0)";
+        document.getElementById("loginCard").style.opacity = "1";
+        document.getElementById("loginCard").style.transform = "translateY(0)";
+        document.getElementById("footer").style.opacity = "1";
+      }, 1000);
+    }, 2000);
+
+    // Hamburger panel
+    const hamburger = document.getElementById('hamburger');
+    const sidePanel = document.getElementById('sidePanel');
+    const closePanel = document.getElementById('closePanel');
+    const detailBtn = document.getElementById('detailBtn');
+    const detailPanel = document.getElementById('detailPanel');
+    const closeDetail = document.getElementById('closeDetail');
+
+    const importantBtn = document.getElementById('importantBtn');
+    const importantPanel = document.getElementById('importantPanel');
+    const closeImportant = document.getElementById('closeImportant');
+
+    hamburger.onclick = () => { sidePanel.classList.add('open'); };
+    closePanel.onclick = () => { sidePanel.classList.remove('open'); };
+    detailBtn.onclick = () => { detailPanel.classList.add('open'); sidePanel.classList.remove('open'); };
+    closeDetail.onclick = () => { detailPanel.classList.remove('open'); };
+    importantBtn.onclick = () => { importantPanel.classList.add('open'); sidePanel.classList.remove('open'); };
+    closeImportant.onclick = () => { importantPanel.classList.remove('open'); };
+
+    // Kayıt / Giriş
+    const users = {};
+
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('regUser').value;
+      const pass1 = document.getElementById('regPass').value;
+      const pass2 = document.getElementById('regPass2').value;
+      const msg = document.getElementById('regMessage');
+
+      if(pass1 !== pass2){
+        msg.textContent = "Şifreler uyuşmuyor!";
+        msg.style.color = "#ff4444";
+        return;
+      }
+
+      if(users[username]){
+        msg.textContent = "Bu kullanıcı adı zaten kayıtlı!";
+        msg.style.color = "#ff4444";
+        return;
+      }
+
+      users[username] = pass1;
+      msg.textContent = "Kayıt başarılı!";
+      msg.style.color = "#44ff44";
+      document.getElementById('registerForm').reset();
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('logUser').value;
+      const pass = document.getElementById('logPass').value;
+      const msg = document.getElementById('loginMessage');
+      const rand = document.getElementById('randomNumber');
+
+      if(users[username] && users[username] === pass){
+        msg.textContent = "Giriş başarılı!";
+        msg.style.color = "#44ff44";
+        const randomNum = Math.floor(Math.random()*100001);
+        rand.textContent = "Sana özel sayı: " + randomNum;
+        lastRandom = randomNum; // doğrulama için sakla
+      } else {
+        msg.textContent = "Kullanıcı adı veya şifre yanlış!";
+        msg.style.color = "#ff4444";
+        rand.textContent = "";
+        lastRandom = null;
+      }
+
+      document.getElementById('loginForm').reset();
+    });
+
+    // Doğrulama sistemi
+    const verifyBtn = document.getElementById("verifyBtn");
+    const verifyInput = document.getElementById("verifyInput");
+    const verifyMessage = document.getElementById("verifyMessage");
+    let lastRandom = null;
+
+    verifyBtn.onclick = () => {
+      if(verifyInput.value === String(lastRandom) && lastRandom !== null){
+        verifyMessage.style.color = "#44ff44";
+        verifyMessage.textContent =
+          "beni yeteri kadar tanıdın ve bana güvendin aksi takdirde ne siteye girer ne kayıt olur nede kodu girerdin ama belli mi olur belkide güvenilecek biri degilimdir :)";
+      } else {
+        verifyMessage.style.color = "#ff4444";
+        verifyMessage.textContent = "Kod yanlış. Tekrar dene.";
+      }
+    };
+
+  </script>
+
+</body>
+</html>
