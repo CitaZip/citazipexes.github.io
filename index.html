@@ -268,6 +268,8 @@
   <div class="side-panel" id="sidePanel">
     <div class="close-btn" id="closePanel">×</div>
     <div class="menu-option" id="detailBtn">Daha Detaylı Hakkımda</div>
+    <!-- Yeni eklenen menü seçeneği -->
+    <div class="menu-option" id="importantBtn">Hakkımda En Önemli Bilgi</div>
   </div>
 
   <div class="detail-panel" id="detailPanel">
@@ -282,6 +284,13 @@
       Bu site, karanlık bir dijital iz ve bağımsızlığın sembolüdür.
       Hacker ruhu, gizem ve gölgeler benimle.
     </p>
+  </div>
+
+  <!-- Yeni detay panel -->
+  <div class="detail-panel" id="importantPanel" style="background:red; color:white;">
+    <div class="detail-close" id="closeImportant">×</div>
+    <h2>Hakkımda En Önemli Bilgi</h2>
+    <p>Kübrayı coook seviyorum</p>
   </div>
 
   <footer id="footer">
@@ -313,10 +322,16 @@
     const detailPanel = document.getElementById('detailPanel');
     const closeDetail = document.getElementById('closeDetail');
 
+    const importantBtn = document.getElementById('importantBtn');
+    const importantPanel = document.getElementById('importantPanel');
+    const closeImportant = document.getElementById('closeImportant');
+
     hamburger.onclick = () => { sidePanel.classList.add('open'); };
     closePanel.onclick = () => { sidePanel.classList.remove('open'); };
-    detailBtn.onclick = () => { detailPanel.classList.add('open'); };
+    detailBtn.onclick = () => { detailPanel.classList.add('open'); sidePanel.classList.remove('open'); };
     closeDetail.onclick = () => { detailPanel.classList.remove('open'); };
+    importantBtn.onclick = () => { importantPanel.classList.add('open'); sidePanel.classList.remove('open'); };
+    closeImportant.onclick = () => { importantPanel.classList.remove('open'); };
 
     // Kayıt / Giriş
     const users = {};
@@ -390,4 +405,3 @@
 
 </body>
 </html>
-
